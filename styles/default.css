@@ -1,0 +1,207 @@
+/**
+ * page layout
+ */
+
+html, body
+{
+	margin: 0px;
+}
+
+body
+{
+	padding: 112px 0px 25px 0px;
+	font-family: arial;
+	font-size: 14px;
+}
+
+#header
+{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 111px;
+	/* background-color: #696969; */
+	background-color: #333;
+	border-bottom: 1px solid #696969;
+	vertical-align: bottom;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+}
+
+#footer
+{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 25px;
+	background-color: #333;
+	color: #ffffff;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	z-index: 10;
+}
+
+#content_wrapper
+{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: auto;
+	overflow: auto;
+}
+
+/**
+ * header
+ */
+#header p.header_title
+{
+	margin: 0px;
+	padding: 10px 0px 0px 10px;
+	/*
+	position: absolute;
+	bottom: 40;
+	*/
+	font-size: 26px;
+	color: #ffffff;
+}
+
+.header_wrapper
+{
+	height: 80px;
+}
+
+.header_content
+{
+	height: 80px;
+}
+
+#header_menu
+{
+	width: 100%;	
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid #555;
+}
+
+#header_menu ul
+{
+	list-style: none;
+	height: 30px;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+#header_menu li
+{
+	float: left;
+	padding: 5px 10px;
+}
+
+#header_menu a
+{
+	text-decoration: none;
+	color: #ffffff;
+}
+
+#header_menu a:hover
+{
+	color: #3399FF;
+}
+
+/**
+ * footer
+ */
+#footer a
+{
+	color: #3399FF;
+	text-decoration: none;
+}
+
+.footer_info
+{
+	padding: 5px 10px;
+}
+
+.timer_results
+{
+	font-size: smaller;
+}
+
+/**
+ * content
+ */
+#left_pane
+{
+	margin: 0px;
+	padding: 0px;
+	width: 199px;
+	float: left;
+	min-height: 100%;
+	/* border-right: 1px solid #696969; */
+	background-color: #ffffff;
+}
+
+#left_pane > div
+{
+	margin: 0px;
+	padding: 10px 10px;
+	border-bottom: 1px solid #cccccc;
+}
+
+#right_pane
+{
+	margin: 0px;
+	padding: 0px;
+	overflow: auto;
+	background-color: #ffffff;
+}
+
+#content
+{
+	margin: 0px;
+	padding: 10px;
+	height: 100%;
+}
+
+.page_content_title
+{
+	color: #007AF5;
+}
+
+.listitem
+{
+	margin: 0px 0px 10px 0px;
+	padding: 10px;
+	border: 1px solid #BFBFBF;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+.listitem_title
+{
+	margin: 0px;
+	padding: 5px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/* For modern browsers */
+.clearfix:before,
+.clearfix:after {
+    content:"";
+    display:table;
+}
+
+.clearfix:after {
+    clear:both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+.clearfix {
+    zoom:1;
+}
