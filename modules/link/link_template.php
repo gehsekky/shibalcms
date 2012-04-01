@@ -1,42 +1,13 @@
 <style type="text/css">
 	.listitem_category
 	{
-		margin: 0px;
-		border: 0px;
+		font-size: 16px;
 		font-weight: bold;
-	}
-	
-	.link_description
-	{
-		font-size: 12px;
+		padding: 10px;
 	}
 </style>
 
-<script type="text/javascript">
-	$(function () {
-		$('.category_container').listerine({
-			transform: 'columns', 
-			clearfix: true,
-			listitem_style: {
-				'margin': '0px 10px 10px 0px', 
-				'background-color': '#eee', 
-				'text-align' : 'left'
-			}, 
-			listitem_hover: {
-				'in': function () {
-					var $this = $(this);
-					$this.css('background-color', '#fff');
-				}, 
-				'out': function () {
-					var $this = $(this);
-					$this.css('background-color', '#eee');
-				}
-			}
-		});
-	});
-</script>
-
-<h1 class="page_content_title">Links</h1>
+<h1 class="page-header">Links</h1>
 
 <?php 
 $params = SiteManager::get_querystring_params();
@@ -61,7 +32,7 @@ if ($categories) {
 			$row = DataManager::fetch_array($result);
 			while ($row) {
 				// display category
-				echo 	'<div class="listitem listitem_link">' . "\n" .
+				echo 	'<div class="well listitem listitem_link">' . "\n" .
 						    '<input type="hidden" class="link_id" value="' . $row['link_id'] . '" />' . "\n" . 
 							'<div class="link_text"><a href="' . $row['href'] . '" target="_blank">' . $row['text'] . '</a></div>' . "\n" . 
 							'<div class="link_description">' . $row['description'] . '</div>' . "\n" . 

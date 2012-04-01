@@ -1,20 +1,15 @@
 <style type="text/css">
+/*
 	.link_delete, .link_category_delete
 	{
-		width: 18px;
-		height: 18px;
 		float: right;
-		background: url('images/icon-red-x.png') no-repeat;
 	}
 
 	.link_edit, .link_category_edit
 	{
-		width: 18px;
-		height: 18px;
 		float: right;
-		background: url('images/icon-edit.gif');
 	}
-	
+
 	#link_addnew_name
 	{
 		width: 300px;
@@ -31,11 +26,7 @@
 		height: 100px;
 	}
 	
-	.link_addnew_form, .link_category_addnew_form
-	{
-		display: none;
-		position: relative;
-	}
+
 	
 	.listitem
 	{
@@ -81,6 +72,11 @@
 	{
 		padding: 5px 0px;
 	}
+*/
+	.link_addnew_form, .link_category_addnew_form
+	{
+		display: none;
+	}
 	
 	.meow
 	{
@@ -88,15 +84,12 @@
 	}
 </style>
 
-<script type="text/javascript" src="js/tiny_mce/jquery.tinymce.js"></script>
+<script type="text/javascript" src="js/bootstrap/js/bootstrap-tab.js"></script>
 <script type="text/javascript">
 	$(function () {
 
-		$('.linktabs').tabs();
-		$('.link_button').button();
-
 		$('.link_addnew_link').on('click', function (e) {
-			var $listitem = $(this).closest('.listitem');
+			var $listitem = $(this).closest('.well');
 			$('.link_addnew_form', $listitem).toggle();
 			if ($('#link_addnew_editor_category_id').val() !== '0') {
 				reset_linkform();
@@ -104,7 +97,7 @@
 		});
 
 		$('.category_listitem_container').sortable({
-			items: '.listitem',
+			items: '.well',
 			opacity: 0.5,
 			zIndex: 5,
 			start: function (event, ui) {
@@ -124,16 +117,7 @@
 						url: 'modules/link/link_webmethods.php',
 						contentType: 'application/x-www-form-urlencoded', 
 						dataType: 'json', 
-						data: movePayload,
-						done: function (data, status, xhr) {
-							
-						}, 
-						fail: function (xhr, status, err) {
-	
-						}, 
-						always: function (xhr, status) {
-	
-						}
+						data: movePayload
 					});
 				}
 			}
@@ -169,16 +153,7 @@
 					url: 'modules/link/link_webmethods.php',
 					contentType: 'application/x-www-form-urlencoded', 
 					dataType: 'json', 
-					data: movePayload,
-					done: function (data, status, xhr) {
-						
-					}, 
-					fail: function (xhr, status, err) {
-
-					}, 
-					always: function (xhr, status) {
-
-					}
+					data: movePayload
 				});
 			}
 		});
@@ -282,7 +257,7 @@
 			return true;
 		});
 		$('.link_category_addnew_link').on('click', function (e) {
-			var $listitem = $(this).closest('.listitem');
+			var $listitem = $(this).closest('.well');
 			$('.link_category_addnew_form', $listitem).toggle();
 			if ($('#link_category_addnew_editor_category_id').val() !== '0') {
 				reset_linkcategoryform();
@@ -290,7 +265,7 @@
 		});
 
 		// TODO popup asking for confirmation / implement webmethod.
-		$(document).live('click', '.link_category_delete', function (e) {
+		$(document).on('click', '.link_category_delete', function (e) {
 			var $parent = $(this).closest('.listitem');
 			var $link_category_id = $('.link_category_id', $parent).val();
 			if ($link_category_id > 0) {
@@ -347,27 +322,45 @@
 	}
 </script>
 
-<h1 class="page_content_title">Manage Links</h1>
+<h1 class="page-header">Manage Links</h1>
 
 <div class="linktabs">
 	
-	<ul>
-		<li><a href="#tab_link">links</a></li>
-		<li><a href="#tab_category">categories</a></li>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#tab_link" data-toggle="tab">links</a></li>
+		<li><a href="#tab_category" data-toggle="tab">categories</a></li>
 	</ul>
-	<div id="tab_link">
-		<form action="?module=link&m=process_link" method="post">
-			<div class="listitem">
+	<div class="tab-content">
+	<div class="tab-pane active" id="tab_link">
+		<form action="?module=link&m=process_link" method="post" class="form-horizontal">
+			<fieldset>
+			<div class="well">
 				<input type="hidden" id="link_addnew_editor_link_id" name="link_addnew_editor_link_id" value="0" />
-				<div class="link_addnew_link" style="height: 20px; background: url('images/new_icon.png') no-repeat;"><span style="margin-left: 20px;">Link</span></div>
+				<a class="link_addnew_link btn"><i class="icon-plus"></i> Add Link</a>
 				<div class="link_addnew_form">
-					<div class="link_addnew_form_row"><span class="link_addnew_formlabel">href: </span><input type="text" id="link_addnew_href" name="link_addnew_href" class="link_addnew_text" /></div>
-					<div class="link_addnew_form_row"><span class="link_addnew_formlabel">text: </span><input type="text" id="link_addnew_text" name="link_addnew_text" class="link_addnew_text" /></div>
-					<div class="link_addnew_form_row"><span class="link_addnew_formlabel">description: </span><textarea id="link_addnew_description" name="link_addnew_description"></textarea></div>
-					<div class="link_addnew_form_row">
-						<span class="link_addnew_formlabel">category: </span>
-						<select id="link_addnew_category" name="link_addnew_category">
-							<option value="">choose</option>
+					<div class="control-group">
+						<label class="control-label" for="link_addnew_href">href: </label>
+						<div class="controls">
+							<input type="text" id="link_addnew_href" name="link_addnew_href" class="link_addnew_text" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="link_addnew_text">text: </label>
+						<div class="controls">
+							<input type="text" id="link_addnew_text" name="link_addnew_text" class="link_addnew_text" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="link_addnew_description">description: </label>
+						<div class="controls">
+							<textarea id="link_addnew_description" name="link_addnew_description"></textarea>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="link_addnew_category">category: </label>
+						<div class="controls">
+							<select id="link_addnew_category" name="link_addnew_category">
+								<option value="">choose</option>
 <?php 
 $sql = 'select link_category_id, name from link_category order by display_order, name';
 $result = DataManager::query($sql);
@@ -379,11 +372,13 @@ if ($result) {
 	}
 }
 ?>
-						</select>
+							</select>
+						</div>
 					</div>
-					<div class="link_addnew_form_row">
-						<span class="link_addnew_formlabel">&nbsp;</span>
-						<input type="submit" class="link_button" id="link_addnew_submit" name="link_addnew_submit" value="submit" />
+					<div class="control-group">
+						<div class="controls">
+							<input type="submit" class="link_button btn btn-primary" id="link_addnew_submit" name="link_addnew_submit" value="submit" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -395,7 +390,7 @@ if ($categories) {
 	$category = DataManager::fetch_array($categories);
 	while ($category) {
 		echo '<div class="category_container">' . "\n";
-		echo '<div class="listitem listitem_category clearfix">' . "\n" . 
+		echo '<div class="listitem listitem_category">' . "\n" . 
 				'<input type="hidden" class="link_category_id" value="' . $category['link_category_id'] . '" />' . "\n" . 
 				'<input type="hidden" class="link_category_displayorder" value="' . $category['display_order'] . '" />' . "\n" . 
 				'<div class="link_text"><span class="link_category_name">' . $category['name'] . '</span></div>' . "\n" . 
@@ -409,14 +404,19 @@ if ($categories) {
 			$row = DataManager::fetch_array($result);
 			while ($row) {
 				// display category
-				echo '<div class="listitem listitem_link clearfix">' . "\n" .
-					    '<input type="hidden" class="link_id" value="' . $row['link_id'] . '" />' . "\n" . 
-					    //'<input type="hidden" class="link_displayorder" value="' . $row['display_order'] . '" />' . "\n" . 
-					    '<input type="hidden" class="link_category_id" value="' . $row['link_category_id'] . '" />' . "\n" . 
-						'<div class="link_text"><a href="' . $row['href'] . '" target="_blank">' . $row['text'] . '</a></div>' . "\n" . 
-						(array_key_exists('m', $params) && $params['m'] == 'manage_link' ? '<div class="link_delete">&nbsp;</div>' . "\n" : '') .
-						(array_key_exists('m', $params) && $params['m'] == 'manage_link' ? '<div class="link_edit">&nbsp;</div>' . "\n" : '') .
-						'<div class="link_description">' . $row['description'] . '</div>' . "\n" . 
+				echo 	'<div class="well listitem listitem_link">' . "\n" .
+						    '<input type="hidden" class="link_id" value="' . $row['link_id'] . '" />' . "\n" . 
+						    '<input type="hidden" class="link_category_id" value="' . $row['link_category_id'] . '" />' . "\n" .
+						    '<div class="row-fluid">' . "\n" .  
+						    	'<div class="span10">' . "\n" . 
+									'<div class="link_text"><a href="' . $row['href'] . '" target="_blank">' . $row['text'] . '</a></div>' . "\n" .
+									'<div class="link_description">' . $row['description'] . '</div>' . "\n" .
+								'</div>' . "\n" .  
+								'<div class="span2" style="text-align: right;">' . "\n" . 
+									'<a class="link_edit btn"><i class="icon-edit"></i></a>' . "\n" . 
+									'<a class="link_delete btn"><i class="icon-minus"></i></a>' . "\n" . 
+								'</div>' . "\n" . 
+							'</div>' . "\n" . 
 						'</div>' . "\n";
 				$row = DataManager::fetch_array($result);
 			}
@@ -426,21 +426,26 @@ if ($categories) {
 	}
 }
 ?>
+			</fieldset>
 			</form>
 		</div>
-		<div id="tab_category">
-			<form action="?module=link&m=process_category" method="post">
-			<div class="listitem">
+		<div class="tab-pane" id="tab_category">
+			<form action="?module=link&m=process_category" method="post" class="form-horizontal">
+			<fieldset>
+			<div class="well">
 				<input type="hidden" id="link_category_addnew_editor_category_id" name="link_category_addnew_editor_category_id" value="0" />
-				<div class="link_category_addnew_link" style="height: 20px; background: url('images/new_icon.png') no-repeat;"><span style="margin-left: 20px;">Category</span></div>
+				<a class="link_category_addnew_link btn"><i class="icon-plus"></i> Add Category</a>
 				<div class="link_category_addnew_form">
-					<div class="link_addnew_form_row">
-						<span class="link_addnew_formlabel">name: </span>
-						<input type="text" id="link_category_addnew_name" name="link_category_addnew_name" />
+					<div class="control-group">
+						<label class="control-label">name: </label>
+						<div class="controls">
+							<input type="text" id="link_category_addnew_name" name="link_category_addnew_name" class="input-large" />
+						</div>
 					</div>
-					<div class="link_addnew_form_row">
-						<span class="link_addnew_formlabel">&nbsp;</span>
-						<input type="submit" class="link_button" id="link_category_addnew_submit" name="link_category_addnew_submit" value="submit" />
+					<div class="control-group">
+						<div class="controls">
+							<input type="submit" class="link_button btn btn-primary" id="link_category_addnew_submit" name="link_category_addnew_submit" value="submit" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -453,17 +458,25 @@ if ($result) {
 	$row = DataManager::fetch_array($result);
 	while ($row) {
 		// display category
-		echo 	'<div class="listitem clearfix">' . "\n" .
-				    '<input type="hidden" class="link_category_id" value="' . $row['link_category_id'] . '" />' . "\n" . 
-					'<div class="link_text">' . $row['name'] . '</div>' . "\n" . 
-					(array_key_exists('m', $params) && $params['m'] == 'manage_link' ? '<div class="link_category_delete">&nbsp;</div>' . "\n" : '') .
-					(array_key_exists('m', $params) && $params['m'] == 'manage_link' ? '<div class="link_category_edit">&nbsp;</div>' . "\n" : '') .
+		echo 	'<div class="well listitem">' . "\n" .
+				    '<input type="hidden" class="link_category_id" value="' . $row['link_category_id'] . '" />' . "\n" .
+				    '<div class="row-fluid">' . "\n" .  
+						'<div class="span10">' . "\n" . 
+							'<div class="link_text">' . $row['name'] . '</div>' . "\n" . 
+						'</div>' . "\n" . 
+						'<div class="span2" style="text-align: right;">' . "\n" . 
+							'<a class="link_category_delete btn"><i class="icon-minus"></i></a>' . "\n" .
+							'<a class="link_category_edit btn"><i class="icon-edit"></i></a>' . "\n" .
+						'</div>' . "\n" . 
+					'</div>' . "\n" . 
 				'</div>' . "\n";
 		$row = DataManager::fetch_array($result);
 	}
 }
 ?>
 			</div>
+			</fieldset>
 		</form>
+	</div>
 	</div>
 </div>

@@ -2,6 +2,9 @@
 require_once '../../config.php';
 require_once '../../core/datamanager.php';
 require_once '../../core/usermanager.php';
+require_once '../../core/sessionmanager.php';
+
+SessionManager::start();
 
 if (!UserManager::is_admin())
 {

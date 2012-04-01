@@ -59,7 +59,7 @@ class loginModule extends Module
 	public function header_menu_text()
 	{
 		if (!UserManager::logged_in()) {
-			return '';
+			return 'login';
 		} else {
 			return 'logout';
 		}
@@ -77,6 +77,16 @@ class loginModule extends Module
 	public function header_menu_display_order()
 	{
 		return 10;
+	}
+	
+	public function load_widget()
+	{
+		require_once 'modules/login/login_widget_template.php';
+	}
+	
+	public function widget_display_order()
+	{
+		return 0;
 	}
 }
 ?>

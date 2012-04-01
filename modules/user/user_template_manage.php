@@ -1,58 +1,9 @@
 <style type="text/css">
-	.user_delete
-	{
-		width: 18px;
-		height: 18px;
-		float: right;
-		background: url('images/icon-red-x.png') no-repeat;
-	}
-
-	.user_edit
-	{
-		width: 18px;
-		height: 18px;
-		float: right;
-		background: url('images/icon-edit.gif');
-	}
-	
-	#userpublish_headline
-	{
-		width: 500px;
-	}
-	
-	#userpublish_content
-	{
-		width: 500px;
-		height: 300px;
-	}
-	
 	.user_addnew_form
 	{
 		display: none;
-		position: relative;
-	}
-	
-	.user_name
-	{
-		width: 80%;
-		float: left;
-	}
-	
-	.user_addnew_formlabel
-	{
-		display: block;
-		width: 100px;
-		text-align: right;
-		float: left;
-	}
-	
-	.user_addnew_form_row
-	{
-		padding: 5px 0px;
 	}
 </style>
-
-<script type="text/javascript" src="js/tiny_mce/jquery.tinymce.js"></script>
 
 <script type="text/javascript">
 	$(function () {
@@ -132,26 +83,6 @@
 				}
 			}
 			return true;
-		}).button();
-
-		$('.listitem_container').listerine({
-			transform: 'grid', 
-			listitem_style: {
-				'width': '200px',
-				'min-height': '50px', 
-				'margin': '0px 10px 10px 0px', 
-				'background-color': '#eee'
-			}, 
-			listitem_hover: {
-				'in': function () {
-					var $this = $(this);
-					$this.css('background-color', '#fff');
-				}, 
-				'out': function () {
-					var $this = $(this);
-					$this.css('background-color', '#eee');
-				}
-			}
 		});
 	});
 
@@ -165,20 +96,41 @@
 	}
 </script>
 
-<h1 class="page_content_title">Manage Users</h1>
+<h1 class="page-header">Manage Users</h1>
 
-<form action="?module=user&amp;m=process_user" method="post">
-		<div class="listitem">
+<form action="?module=user&amp;m=process_user" method="post" class="form-horizontal">
+		<div class="listitem well">
 			<input type="hidden" id="user_addnew_editor_user_id" name="user_addnew_editor_user_id" value="0" />
-			<div class="user_addnew_link" style="width: 20px; height: 20px; background: url('images/new_icon.png') no-repeat;">&nbsp;</div>
+			<a class="user_addnew_link btn"><i class="icon-plus"></i> Add User</a>
 			<div class="user_addnew_form">
-				<div class="user_addnew_form_row"><span class="user_addnew_formlabel">username: </span><input type="text" id="user_addnew_username" name="user_addnew_username" /></div>
-				<div class="user_addnew_form_row"><span class="user_addnew_formlabel">password: </span><input type="password" id="user_addnew_password" name="user_addnew_password" /></div>
-				<div class="user_addnew_form_row"><span class="user_addnew_formlabel">confirm: </span><input type="password" id="user_addnew_password_confirm" /></div>
-				<div class="user_addnew_form_row"><span class="user_addnew_formlabel">is admin: </span><input type="checkbox" id="user_addnew_isadmin" name="user_addnew_isadmin" /></div>
-				<div class="user_addnew_form_row">
-					<span class="user_addnew_formlabel">&nbsp;</span>
-					<input type="submit" id="user_addnew_submit" name="user_addnew_submit" value="submit" />
+				<div class="control-group">
+					<label class="control-label" for="user_addnew_username">username: </label>
+					<div class="controls">
+						<input type="text" id="user_addnew_username" name="user_addnew_username" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="user_addnew_password">password: </label>
+					<div class="controls">
+						<input type="password" id="user_addnew_password" name="user_addnew_password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="user_addnew_password_confirm">confirm: </label>
+					<div class="controls">
+						<input type="password" id="user_addnew_password_confirm" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="user_addnew_isadmin">is admin: </label>
+					<div class="controls">
+						<input type="checkbox" id="user_addnew_isadmin" name="user_addnew_isadmin" />
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<input type="submit" id="user_addnew_submit" name="user_addnew_submit" value="submit" class="btn btn-primary" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -190,12 +142,18 @@ $result = DataManager::query($sql);
 if ($result) {
 	$row = DataManager::fetch_array($result);
 	while ($row) {
-		echo 	'<div class="listitem clearfix">' . "\n" .
+		echo 	'<div class="listitem well">' . "\n" .
 				    '<input type="hidden" class="user_id" value="' . $row['user_id'] . '" />' . "\n" . 
 				    '<input type="hidden" class="user_is_admin" value="' . $row['is_admin'] . '" />' . "\n" . 
-					'<div class="user_name">' . $row['username'] . '</div>' . "\n" . 
-					(array_key_exists('m', $params) && $params['m'] == 'manage' ? '<div class="user_delete">&nbsp;</div>' . "\n" : '') .
-					(array_key_exists('m', $params) && $params['m'] == 'manage' ? '<div class="user_edit">&nbsp;</div>' . "\n" : '') . 
+				    '<div class="row-fluid">' . "\n" . 
+					    '<div class="span10">' . "\n" . 
+							'<div class="user_name">' . $row['username'] . '</div>' . "\n" . 
+						'</div>' . "\n" . 
+						'<div class="span2" style="text-align: right;">' . "\n" . 
+							'<a class="user_delete btn"><i class="icon-remove"></i></a>' . "\n" .
+							'<a class="user_edit btn"><i class="icon-edit"></i></a>' . "\n" . 
+						'</div>' . "\n" . 
+					'</div>' . "\n" . 
 				'</div>' . "\n";
 		$row = DataManager::fetch_array($result);
 	}
