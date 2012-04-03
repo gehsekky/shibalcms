@@ -79,10 +79,14 @@ class ModuleManager
 	 * @param string $display_order
 	 * @return array
 	 */
-	public static function get_modules($display_order)
+	public static function get_modules($display_order = -1)
 	{
 		$sorted_names = array();
-		$sql = "select name from module where $display_order > -1 order by $display_order asc";
+		if ($display_order > -1) {
+			$sql = "select name from module where $display_order > -1 order by $display_order asc";
+		} else {
+			$sql = 'select name from module order by name asc';
+		}
 		$result = DataManager::query($sql);
 		if ($result) {
 			$row = DataManager::fetch_array($result);

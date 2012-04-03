@@ -42,6 +42,20 @@ class SiteManager
 		$module->load_content();
 	}
 	
+	public static function load_admin_content()
+	{
+		$module_names = ModuleManager::get_modules();
+		foreach ($module_names as $module_name) {
+			$path = SiteSettings::get('site_path') . 'modules/' . $module_name . '/' . $module_name . '_template_admin.php';
+			if (file_exists($path)) {
+				echo '<fieldset>' . "\n";
+				echo '<legend>' . $module_name . '</legend>' . "\n";
+				require_once $path;
+				echo '</fieldset>' . "\n";
+			}
+		}
+	}
+	
 	public static function run()
 	{
 		if (!isset($GLOBALS['site_settings'])) {
