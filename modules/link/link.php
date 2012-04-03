@@ -116,15 +116,5 @@ class linkModule extends Module
 			require_once 'modules/link/link_template.php';
 		}
 	}
-	
-	public function header_menu_text()
-	{
-		return 'links';
-	}
-
-	public function header_menu_display_order()
-	{
-		return 5;
-	}
 }
 ?>

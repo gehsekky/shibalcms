@@ -12,3 +12,4 @@ SEO-friendly url system so we don't have to depend on web server (optional).
 * Clean up core/ and put some manager classes in with their respective modules.
 * Provide an AJAX interface for reordering menu items.
 * Ability to provide custom error pages.
+* Write install script.

@@ -12,6 +12,8 @@ class adminModule extends Module
 		$params = SiteManager::get_querystring_params();
 		if (array_key_exists('m', $params)) {
 			switch ($params['m']) {
+				case 'process_settings':
+					break;
 				default:
 					SiteManager::load_page();
 					break;
@@ -26,25 +28,28 @@ class adminModule extends Module
 		$params = SiteManager::get_querystring_params();
 		if (array_key_exists('m', $params)) {
 			switch ($params['m']) {
+				case 'manage_settings':
+					require_once 'admin_template_manage_settings.php';
+					break;
+				case 'manage_modules':
+					require_once 'admin_template_manage_modules.php';
+					break;
 				default:
 					require_once 'admin_template.php';
-				break;
 			}
 		} else {
 			require_once 'admin_template.php';
 		}
 	}
 	
-	public function load_widget()
+	public function header_menu_text_dynamic()
 	{
-		
-	}
-	
-	public function header_menu_text()
-	{
-		if (UserManager::is_admin()) {
+		if (UserManager::is_admin())
+		{
 			return 'admin';
-		} else {
+		}
+		else
+		{
 			return '';
 		}
 	}

@@ -1,11 +1,13 @@
 <?php
+require_once 'sitesettings.php';
+
 class DataManager
 {
 	private static function connect()
 	{
 		try {		
-			$conn = mysql_connect('localhost', $GLOBALS['site_settings']['db_username'], $GLOBALS['site_settings']['db_password']);
-			mysql_select_db($GLOBALS['site_settings']['db_database'], $conn);
+			$conn = mysql_connect('localhost', SiteSettings::get('db_username'), SiteSettings::get('db_password'));
+			mysql_select_db(SiteSettings::get('db_database'), $conn);
 		} catch (Exception $e) {
 			echo 'ERROR: could not connect to database.<br />' . mysql_error(DataManager::connect());
 		}
@@ -22,10 +24,10 @@ class DataManager
 		return $result;
 	}
 	
-	public static function fetch_array($resource)
+	public static function fetch_array($result)
 	{
 		try {
-			return mysql_fetch_array($resource);
+			return mysql_fetch_array($result);
 		} catch (Exception $e) {
 			echo 'ERROR: could not fetch row.<br />' . mysql_error(DataManager::connect());
 		}

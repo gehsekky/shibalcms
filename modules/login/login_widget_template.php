@@ -1,4 +1,5 @@
 <div class="widget">
+	<?php if (!UserManager::logged_in()) { ?>
 	<form class="form-vertical">
 		<fieldset>
 			<div class="control-group">
@@ -22,4 +23,7 @@
 			</div>
 		</fieldset>
 	</form>
+	<?php } else { ?>
+		Logged in as: <?php echo UserManager::current_username(); ?>
+	<?php } ?>
 </div>

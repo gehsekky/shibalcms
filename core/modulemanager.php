@@ -1,55 +1,123 @@
 <?php
+require_once 'sitesettings.php';
+require_once 'datamanager.php';
+
 class ModuleManager
 {
-	public static function load_module($module_name) {
-		$module = false;
-		// check if module file exists
-		$module_path = $GLOBALS['site_settings']['site_path'] . 'modules/' . $module_name . '/' . $module_name . '.php';
-		if (file_exists($module_path)) {			
-			// include it and instantiate
-			require_once 'modules/' . $module_name . '/' . $module_name . '.php';		
-			$module_class_name = $module_name . 'Module';
-			$module = new $module_class_name();
+	/**
+	 * loads module into object and returns it. checks to see if module is 
+	 * installed. if not, installs it.
+	 * 
+	 * @param string $module_name
+	 * @return Module
+	 */
+	public static function load_module($module_name)
+	{
+		$module = null;
+		
+		// check if module is installed. if not, install.
+		// TODO check if enabled
+		if (!ModuleManager::is_installed($module_name)) {
+			ModuleManager::install_module($module_name);
+		}
+		
+		$sql = sprintf('select * from module where name = \'%s\'', DataManager::sanitize($module_name));
+		$result = DataManager::query($sql);
+		if ($result) {
+			$row = DataManager::fetch_array($result);
+			
+			// check if module file exists
+			$module_path = SiteSettings::get('site_path') . 'modules/' . $module_name . '/' . $module_name . '.php';
+			if (file_exists($module_path)) {
+				// include it and instantiate
+				require_once 'modules/' . $module_name . '/' . $module_name . '.php';
+				$module_class_name = $module_name . 'Module';
+				$module = new $module_class_name($row);
+			}
 		}
 		return $module;
 	}
 	
-	public static function get_modules($display_order) {
-		$modules_path = $GLOBALS['site_settings']['site_path'] . 'modules/';
-		$module_names = ModuleManager::get_dirs($modules_path);
-		$sorty = array();
-		foreach ($module_names as $module_name) {
-			$module = ModuleManager::load_module($module_name);
-			switch ($display_order) {
-				case 'widget_display_order':
-					$sorty[$module_name] = $module->widget_display_order();
-					break;
-				case 'header_menu_display_order':
-					$sorty[$module_name] = $module->header_menu_display_order();
-					break;
-				default:
-					$sorty[$module_name] = $module->header_menu_display_order();
+	/**
+	 * check if module is installed
+	 * 
+	 * @param string $module_name
+	 * @return bool
+	 */
+	public static function is_installed($module_name)
+	{
+		$sql = sprintf('select count(*) as modulecount from module where name = \'%s\'', DataManager::sanitize($module_name));
+		$result = DataManager::query($sql);
+		if ($result) {
+			$row = DataManager::fetch_array($result);
+			
+			if ($row['modulecount'] != 0) {
+				return true;
 			}
 		}
-		asort($sorty);
+		return false;
+	}
+	
+	/**
+	 * store module in database
+	 * 
+	 * @param unknown_type $module_name
+	 */
+	public static function install_module($module_name)
+	{
+		$sql = sprintf(	'insert into module ' . 
+						'(name, header_menu_display_order, header_menu_display_text, ' . 
+						'header_menu_href, widget_display_order) ' . 
+						'values (\'%s\', -1, null, null, -1)', 
+						DataManager::sanitize($module_name));
+		DataManager::query($sql);
+	}
+	
+	/**
+	 * returns array of module names for display purposes
+	 * 
+	 * @param string $display_order
+	 * @return array
+	 */
+	public static function get_modules($display_order)
+	{
 		$sorted_names = array();
-		$sorty_length = count($sorty);
-		foreach ($sorty as $module_name => $dummy_display_order) {
-			$sorted_names[] = $module_name;
+		$sql = "select name from module where $display_order > -1 order by $display_order asc";
+		$result = DataManager::query($sql);
+		if ($result) {
+			$row = DataManager::fetch_array($result);
+			while ($row) {
+				$sorted_names[] = $row['name'];
+				$row = DataManager::fetch_array($result);
+			}
 		}
+
 		return $sorted_names;
 	}
 	
-	public static function get_current_module() {
+	/**
+	 * get current module (from querystring or setting)
+	 * 
+	 * @return Module
+	 */
+	public static function get_current_module()
+	{
 		$params = SiteManager::get_querystring_params();
 		$module_name = array_key_exists('module', $params) ? $params['module'] : '';
 		if ($module_name == '') {
-			$module_name = $GLOBALS['site_settings']['site_default_module'];
+			$module_name = SiteSettings::get('site_default_module');
 		}
 		return ModuleManager::load_module($module_name);
 	}
 	
-	// extract directories from scandir results
+	/**
+	 * extract directories from scandir results
+	 * 
+	 * @param string $path
+	 * @param bool $files_too
+	 * @param array $extra_filters
+	 * @return array
+	 */
 	public static function get_dirs($path, $files_too = false, $extra_filters = array())
 	{
 		if (substr($path, strlen($path) - 1) != '/') {

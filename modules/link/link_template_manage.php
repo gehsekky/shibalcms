@@ -1,78 +1,4 @@
 <style type="text/css">
-/*
-	.link_delete, .link_category_delete
-	{
-		float: right;
-	}
-
-	.link_edit, .link_category_edit
-	{
-		float: right;
-	}
-
-	#link_addnew_name
-	{
-		width: 300px;
-	}
-	
-	#link_addnew_displayorder
-	{
-		width: 50px;
-	}
-	
-	#link_addnew_description
-	{
-		width: 400px;
-		height: 100px;
-	}
-	
-
-	
-	.listitem
-	{
-		position: relative;
-	}
-	
-	.link_text
-	{
-		width: 90%;
-		float: left;
-	}
-	
-	.link_description
-	{
-		clear: both;
-	}
-	
-	.link_addnew_text
-	{
-		width: 400px;
-	}
-	
-	.link_addnew_formlabel
-	{
-		display: block;
-		width: 120px;
-		text-align: right;
-		float: left;
-	}
-	
-	.listitem_category
-	{
-		border: 0px;
-		font-weight: bold;
-	}
-	
-	.category_container
-	{
-		min-height: 50px;
-	}
-	
-	.link_addnew_form_row
-	{
-		padding: 5px 0px;
-	}
-*/
 	.link_addnew_form, .link_category_addnew_form
 	{
 		display: none;
@@ -81,6 +7,13 @@
 	.meow
 	{
 		z-index: 10000;
+	}
+	
+	.link_category_name
+	{
+		font-size: 16px;
+		font-weight: bold;
+		padding: 10px;
 	}
 </style>
 
@@ -163,47 +96,42 @@
 			var $link_id = $('.link_id', $parent).val();
 			if ($link_id > 0) {
 				$('#master_dialog')
-					.dialog('destroy')
-					.html('are you sure you want to delete?')
-					.dialog({
-						title: 'confirm',
-						modal: true, 
-						buttons: {
-							'delete': function () {
-								var deletePayload = {
-									method: 'delete_link', 
-									link_delete_id: $link_id
-								};
+					.bootstrapmodal('destroy')
+					.bootstrapmodal({
+						title: 'Confirm Delete',
+						message: 'Are you sure you want to delete?',
+						primaryButtonText: 'Delete',
+						primaryButtonClick: function () {
+							var deletePayload = {
+								method: 'delete_link', 
+								link_delete_id: $link_id
+							};
 								
-								$.ajax({
-									type: 'post',
-									url: 'modules/link/link_webmethods.php',
-									contentType: 'application/x-www-form-urlencoded', 
-									dataType: 'json', 
-									data: deletePayload, 
-									success: function(msg) {
-										$parent.fadeOut('slow').remove();
-										$.meow({
-											title: 'success',
-											message: 'link deleted', 
-											icon: 'js/jquery/plugins/meow/nyan-cat.gif'
-										});
-									}, 
-									error: function(xhr, status, err) {
-										$.meow({
-											title: 'error',
-											message: 'an error occurred while deleting link', 
-											icon: 'js/jquery/plugins/meow/nyan-cat.gif'
-										});
-									}
-								});
-								$(this).dialog('close');
-							},
-							'cancel': function () {
-								$(this).dialog('close');
-							}
+							$.ajax({
+								type: 'post',
+								url: 'modules/link/link_webmethods.php',
+								contentType: 'application/x-www-form-urlencoded', 
+								dataType: 'json', 
+								data: deletePayload, 
+								success: function(msg) {
+									$parent.fadeOut('slow').remove();
+									$.meow({
+										title: 'success',
+										message: 'link deleted', 
+										icon: 'js/jquery/plugins/meow/nyan-cat.gif'
+									});
+								}, 
+								error: function(xhr, status, err) {
+									$.meow({
+										title: 'error',
+										message: 'an error occurred while deleting link', 
+										icon: 'js/jquery/plugins/meow/nyan-cat.gif'
+									});
+								}
+							});
+							$('#master_dialog').modal('hide');
 						}
-					});
+					});					
 			} else {
 				$parent.fadeOut('slow').remove();
 			}
@@ -393,7 +321,7 @@ if ($categories) {
 		echo '<div class="listitem listitem_category">' . "\n" . 
 				'<input type="hidden" class="link_category_id" value="' . $category['link_category_id'] . '" />' . "\n" . 
 				'<input type="hidden" class="link_category_displayorder" value="' . $category['display_order'] . '" />' . "\n" . 
-				'<div class="link_text"><span class="link_category_name">' . $category['name'] . '</span></div>' . "\n" . 
+				'<div class="link_text link_category_name">' . $category['name'] . '</div>' . "\n" . 
 				'</div>' . "\n";
 		$sql = 'select link_id, href, text, link_category_id, description ' . 
 				'from link ' . 

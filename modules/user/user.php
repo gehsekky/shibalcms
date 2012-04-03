@@ -91,10 +91,5 @@ class userModule extends Module
 			
 		}		
 	}
-	
-	public function header_menu_text()
-	{
-		return '';
-	}
 }
 ?>

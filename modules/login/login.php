@@ -56,37 +56,14 @@ class loginModule extends Module
 		}
 	}
 	
-	public function header_menu_text()
-	{
-		if (!UserManager::logged_in()) {
-			return 'login';
-		} else {
-			return 'logout';
-		}
-	}
-	
-	public function header_menu_href()
-	{
-		if (!UserManager::logged_in()) {
-			return '';
-		} else {
-			return '?module=login&m=logout';
-		}
-	}
-	
-	public function header_menu_display_order()
-	{
-		return 10;
-	}
-	
 	public function load_widget()
 	{
 		require_once 'modules/login/login_widget_template.php';
 	}
 	
-	public function widget_display_order()
+	public function header_menu_text_dynamic()
 	{
-		return 0;
+		return UserManager::logged_in() ? 'logout' : 'login';
 	}
 }
 ?>

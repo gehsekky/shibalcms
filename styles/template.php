@@ -27,7 +27,10 @@ $timer->start();
 		
 		<!-- bootstrap -->
 		<link rel="stylesheet" href="js/bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" href="js/bootstrap/css/bootstrap-responsive.css"  />
+		<link rel="stylesheet" href="js/bootstrap/css/bootstrap-responsive.css" />
+		<script type="text/javascript" src="js/bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript" src="js/bootstrap/js/bootstrap-modal.js"></script>
+		<script type="text/javascript" src="js/jquery/plugins/jquery.bootstrapmodal.js"></script>
 
 	</head>
 	<body>
@@ -38,7 +41,6 @@ $timer->start();
 					<a class="brand" href="?">Shibal CMS</a>
 			
 					<ul class="nav">
-						<li><a href="?">home</a></li>
 						<?php SiteManager::load_header_menu(); ?>
 					</ul>
 				</div>

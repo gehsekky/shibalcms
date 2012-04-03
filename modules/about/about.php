@@ -8,10 +8,5 @@ class aboutModule extends Module
 	{
 		require_once 'modules/about/about_template.php';
 	}
-	
-	public function header_menu_text()
-	{
-		return '';
-	}
 }
 ?>
