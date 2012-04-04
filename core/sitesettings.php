@@ -1,4 +1,6 @@
 <?php
+require_once '../config.php';
+
 class SiteSettings
 {
 	public static function get($key)

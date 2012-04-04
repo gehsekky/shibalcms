@@ -1,11 +1,16 @@
 <?php 
+require_once '../core/sqlparser.php';
+
 if ($_SERVER['QUERY_STRING'] == 'install') {
 	// set up database
+	$parser = new SqlParser('shibalcms.sql');
+	$parser->Parse();	
+	$parser->Execute();
 	
 	// insert admin user record
 	
 	// direct to login page
-}
+} else {
 ?>
 
 <!DOCTYPE html>
@@ -58,4 +63,4 @@ if ($_SERVER['QUERY_STRING'] == 'install') {
 		</form>
 	</body>
 </html>
-
+<?php } ?>
