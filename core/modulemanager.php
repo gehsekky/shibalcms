@@ -14,13 +14,6 @@ class ModuleManager
 	public static function load_module($module_name)
 	{
 		$module = null;
-		
-		// check if module is installed. if not, install.
-		// TODO check if enabled
-		if (!ModuleManager::is_installed($module_name)) {
-			ModuleManager::install_module($module_name);
-		}
-		
 		$sql = sprintf('select * from module where name = \'%s\'', DataManager::sanitize($module_name));
 		$result = DataManager::query($sql);
 		if ($result) {
@@ -139,4 +132,3 @@ class ModuleManager
 		return array_diff($dirs, $extra_filters);
 	}
 }
-?>

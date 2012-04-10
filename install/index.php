@@ -1,5 +1,8 @@
 <?php 
+require_once '../config.php';
+require_once '../core/datamanager.php';
 require_once '../core/sqlparser.php';
+require_once '../core/usermanager.php';
 
 if ($_SERVER['QUERY_STRING'] == 'install') {
 	// set up database
@@ -8,8 +11,34 @@ if ($_SERVER['QUERY_STRING'] == 'install') {
 	$parser->Execute();
 	
 	// insert admin user record
+	$username = isset($_REQUEST['username']) && $_REQUEST['username'] !== '' ? $_REQUEST['username'] : '';
+	$password = isset($_REQUEST['password']) && $_REQUEST['password'] !== '' ? $_REQUEST['password'] : '';
+	$is_admin = 1;
+	$dynamic_salt = mt_rand();
+	$remote_ip = $_SERVER['REMOTE_ADDR'];
+	$sql = sprintf('insert into user ' .
+					'(username, password, created_on, dynamic_salt, last_seen_ip, last_login, is_admin) ' .
+					'values ' .
+					'(\'%s\', sha1(concat(\'%s\', \'%s\', \'%s\')), now(), \'%s\', \'%s\', now(), \'%s\')',
+					DataManager::sanitize($username), 
+					DataManager::sanitize(SiteSettings::get('site_static_salt')),
+					DataManager::sanitize($password), DataManager::sanitize($dynamic_salt), 
+					DataManager::sanitize($dynamic_salt), DataManager::sanitize($remote_ip), 
+					DataManager::sanitize($is_admin));
+	if (!DataManager::query($sql)) {
+		header('Location: ?error');
+	}
 	
-	// direct to login page
+	$sql = 	'insert into module ' . 
+			'(name, header_menu_display_order, header_menu_display_text, ' . 
+			'header_menu_href, widget_display_order) ' . 
+			'values (\'about\', 0, \'home\', null, -1)' . 
+			',(\'link\', 1, \'links\', \'?module=link\', -1)' . 
+			',(\'login\', 2, null, null, 0)' . 
+			',(\'admin\', 3, null, null, -1)';
+	if (!DataManager::query($sql)) {
+		header('Location: ?error');
+	}
 } else {
 ?>
 

@@ -65,5 +65,9 @@ class loginModule extends Module
 	{
 		return UserManager::logged_in() ? 'logout' : 'login';
 	}
+	
+	public function header_menu_href_dynamic()
+	{
+		return UserManager::logged_in() ? '?module=login&amp;m=logout' : '?module=login';
+	}
 }
-?>

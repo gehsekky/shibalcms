@@ -29,4 +29,3 @@ class TimerManager
 		return $this->stop_time - $this->start_time;
 	}
 }
-?>

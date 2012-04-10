@@ -10,6 +10,7 @@ abstract class Module
 {
 	// database row
 	private $_row;
+	public $name;
 	
 	/**
 	 * constructor
@@ -19,6 +20,7 @@ abstract class Module
 	function __construct($row)
 	{
 		$this->_row = $row;
+		$this->name = $row['name'];
 	}
 	
 	/**
@@ -55,6 +57,11 @@ abstract class Module
 		return '';
 	}
 	
+	public function header_menu_href_dynamic()
+	{
+		return '';
+	}
+	
 	/**
 	 * get widget display order
 	 * 
@@ -72,7 +79,7 @@ abstract class Module
 	 */
 	final public function header_menu_text()
 	{
-		if ($this->_row['header_menu_display_text'] == '' || $this->_row['header_menu_display_text'] == null)
+		if (empty($this->_row['header_menu_display_text']))
 		{
 			return $this->header_menu_text_dynamic();
 		}
@@ -89,7 +96,11 @@ abstract class Module
 	 */
 	final public function header_menu_href()
 	{
-		return $this->_row['header_menu_href'];
+		if (empty($this->_row['header_menu_href'])) {
+			return $this->header_menu_href_dynamic();
+		} else {
+			return $this->_row['header_menu_href'];
+		}
 	}
 	
 	/**
@@ -102,4 +113,3 @@ abstract class Module
 		return $this->_row['header_menu_display_order'];
 	}
 }
-?>

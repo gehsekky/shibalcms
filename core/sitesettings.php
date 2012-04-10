@@ -1,5 +1,4 @@
 <?php
-require_once '../config.php';
 
 class SiteSettings
 {
@@ -52,4 +51,3 @@ class SiteSettings
 		return false;
 	}
 }
-?>

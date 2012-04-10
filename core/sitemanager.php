@@ -7,7 +7,18 @@ class SiteManager
 {
 	public static function init()
 	{
+		// start session
 		SessionManager::start();
+		
+		// init modules
+		$module_names = ModuleManager::get_dirs(SiteSettings::get('site_path') . 'modules/');
+		foreach ($module_names as $module_name) {
+			// check if module is installed. if not, install.
+			// TODO check if enabled
+			if (!ModuleManager::is_installed($module_name)) {
+				ModuleManager::install_module($module_name);
+			}			
+		}
 	}
 
 	public static function load_page()
@@ -85,4 +96,3 @@ class SiteManager
 		}
 	}
 }
-?>

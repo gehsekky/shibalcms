@@ -12,4 +12,3 @@ class SessionManager
 		session_destroy();
 	}
 }
-?>

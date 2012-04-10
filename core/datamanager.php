@@ -5,7 +5,7 @@ class DataManager
 {
 	private static function connect()
 	{
-		try {		
+		try {
 			$conn = mysql_connect('localhost', SiteSettings::get('db_username'), SiteSettings::get('db_password'));
 			mysql_select_db(SiteSettings::get('db_database'), $conn);
 		} catch (Exception $e) {
@@ -59,4 +59,3 @@ class DataManager
 		}
 	}
 }
-?>

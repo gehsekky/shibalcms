@@ -19,7 +19,7 @@ class SqlParser
 		foreach ($lines as $linenum => $line) {
 			if (substr($line, 0, 2) == '--' || 
 					substr($line, 0, 1) == '#' ||
-					strlen($line) == 0) {
+					empty($line)) {
 				unset($lines[$linenum]);
 			}
 		}
@@ -31,13 +31,11 @@ class SqlParser
 		$blob = implode($this->ParsedLines);
 		$statements = explode(';', $blob);
 		foreach ($statements as $sql) {
-			echo "$sql<br />\n";
 			try {
-			DataManager::query($sql);
+				DataManager::query($sql);
 			} catch (Exception $e) {
 				echo $e->getMessage() . "<br />\n";
 			}
 		}
 	}
 }
-?>
