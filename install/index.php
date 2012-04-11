@@ -39,6 +39,8 @@ if ($_SERVER['QUERY_STRING'] == 'install') {
 	if (!DataManager::query($sql)) {
 		header('Location: ?error');
 	}
+	
+	// TODO do something after successful install. like go somewhere.
 } else {
 ?>
 

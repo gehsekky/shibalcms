@@ -2,16 +2,14 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-DROP SCHEMA IF EXISTS `shibalcms` ;
-CREATE SCHEMA IF NOT EXISTS `shibalcms` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `shibalcms` ;
+DROP SCHEMA IF EXISTS `marduk_shibalcms` ;
+CREATE SCHEMA IF NOT EXISTS `marduk_shibalcms` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `marduk_shibalcms` ;
 
 -- -----------------------------------------------------
--- Table `shibalcms`.`sitesetting`
+-- Table `marduk_shibalcms`.`sitesetting`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `shibalcms`.`sitesetting` ;
-
-CREATE  TABLE IF NOT EXISTS `shibalcms`.`sitesetting` (
+CREATE  TABLE IF NOT EXISTS `marduk_shibalcms`.`sitesetting` (
   `name` VARCHAR(128) NOT NULL ,
   `value` VARCHAR(1024) NULL DEFAULT NULL ,
   PRIMARY KEY (`name`) ,
@@ -20,11 +18,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `shibalcms`.`user`
+-- Table `marduk_shibalcms`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `shibalcms`.`user` ;
-
-CREATE  TABLE IF NOT EXISTS `shibalcms`.`user` (
+CREATE  TABLE IF NOT EXISTS `marduk_shibalcms`.`user` (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(45) NOT NULL ,
   `password` VARCHAR(256) NOT NULL ,
@@ -40,11 +36,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `shibalcms`.`link_category`
+-- Table `marduk_shibalcms`.`link_category`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `shibalcms`.`link_category` ;
-
-CREATE  TABLE IF NOT EXISTS `shibalcms`.`link_category` (
+CREATE  TABLE IF NOT EXISTS `marduk_shibalcms`.`link_category` (
   `link_category_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(256) NULL DEFAULT NULL ,
   `parent_id` INT NULL DEFAULT NULL ,
@@ -54,11 +48,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `shibalcms`.`link`
+-- Table `marduk_shibalcms`.`link`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `shibalcms`.`link` ;
-
-CREATE  TABLE IF NOT EXISTS `shibalcms`.`link` (
+CREATE  TABLE IF NOT EXISTS `marduk_shibalcms`.`link` (
   `link_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `href` VARCHAR(1024) NOT NULL ,
   `text` VARCHAR(512) NOT NULL ,
@@ -72,23 +64,21 @@ CREATE  TABLE IF NOT EXISTS `shibalcms`.`link` (
   INDEX `fk_link_link_category1` (`link_category_id` ASC) ,
   CONSTRAINT `fk_link_user1`
     FOREIGN KEY (`user_id` )
-    REFERENCES `shibalcms`.`user` (`user_id` )
+    REFERENCES `marduk_shibalcms`.`user` (`user_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_links_link_category1`
     FOREIGN KEY (`link_category_id` )
-    REFERENCES `shibalcms`.`link_category` (`link_category_id` )
+    REFERENCES `marduk_shibalcms`.`link_category` (`link_category_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `shibalcms`.`module`
+-- Table `marduk_shibalcms`.`module`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `shibalcms`.`module` ;
-
-CREATE  TABLE IF NOT EXISTS `shibalcms`.`module` (
+CREATE  TABLE IF NOT EXISTS `marduk_shibalcms`.`module` (
   `module_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(128) NOT NULL ,
   `header_menu_display_order` INT NOT NULL DEFAULT -1 ,
