@@ -40,7 +40,8 @@ if ($_SERVER['QUERY_STRING'] == 'install') {
 		header('Location: ?error');
 	}
 	
-	// TODO do something after successful install. like go somewhere.
+	// done. go to frontpage. maybe we should go to admin screen?
+	header('Location: ../?');
 } else {
 ?>
 

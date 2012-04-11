@@ -29,6 +29,7 @@ class SqlParser
 	public function Execute()
 	{
 		$blob = implode($this->ParsedLines);
+		$blob = str_replace('{{db_database}}', SiteSettings::get('db_database'), $blob);
 		$statements = explode(';', $blob);
 		foreach ($statements as $sql) {
 			try {
